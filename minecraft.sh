@@ -36,9 +36,6 @@ STOP_WARNING_MAX="Server Restarting in 5 minutes..."
 STOP_WARNING_MID="Server Restarting in 1 minute..."
 STOP_WARNING_FINAL="Server shutting down in 10 seconds..."
 
-#---------------------+
-#      Utilities      |
-#---------------------+
 
 as_user() {
   ME="$(whoami)"
@@ -73,11 +70,13 @@ mc_save() {
   if is_running; then
     echo " * Saving map named \"$WORLDNAME\" to disk..."
     mc_alert "$SAVE_START"
+	mc_run "say Beginning autosave..."
     mc_run "save-off"
     mc_run "save-all"
     sync ; sleep 10
     mc_alert "$SAVE_END"
     mc_run "save-on"
+	mc_run "say Autosave complete."
     echo " * World save complete"
   else
     echo " * [ERROR] $SCRNNAME was not running, cannot save world"
@@ -259,9 +258,17 @@ case $1 in
 	  mc_stop
 	;;
 	restart)
+	  echo " * Restart command issued"
+	  echo " * Issuing 5 minute warning to users..."
+	  mc_run "say Server will restart in 5 minutes!"
+	  sleep 240
+	  echo " * Issuing 1 minute warning to users..."
+	  mc_run "say Server will restart in 1 minute!"
+	  sleep 60
+  	  echo " * Server will begin restarting now..."
+	  mc_run "say Server will restart now!"
 	  mc_stop
 	  mc_start
-	  mc_console
 	;;
 	save)
 	  mc_save
@@ -271,6 +278,15 @@ case $1 in
 	;;
 	info)
 	  mc_info
+	;;
+	serverCheck)
+	   if is_running; then
+	   	# Do nothing if server is running
+	   	true
+	   fi
+	   if ! is_running; then
+	   	mc_start
+	   fi
 	;;
 	run)
 	  echo " * Ran \"$2\" on $SCRNNAME"
