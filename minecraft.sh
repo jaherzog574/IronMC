@@ -17,16 +17,16 @@ fi
 #---------------------+
 #    Configuration    |
 #---------------------+
-SCRNNAME="mainMC"
-SERVICE="server.jar"
-MCPATH="/home/minecraft/$SCRNNAME"
+SCRNNAME="minecraft"
+SERVICE="$SCRNNAME.jar"
+MCPATH="/home/mc/$SCRNNAME"
 BACKUP_PATH="$MCPATH/backups"
 WORLDNAME="$(cat $MCPATH/server.properties | grep -E 'level-name' | sed -e s/.*level-name=//)"
 SERVERPORT="$(cat $MCPATH/server.properties | grep -E 'server-port' | sed -e s/.*server-port=//)"
-USER="minecraft"
-CPU_COUNT="2"
-MINRAM="1G"
-MAXRAM="4G"
+USER="root"
+CPU_COUNT="4"
+MINRAM="2G"
+MAXRAM="8G"
 INVOCATION="java -server -XX:UseSSE=4 -XX:+UseCMSCompactAtFullCollection -XX:ParallelGCThreads=$CPU_COUNT -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+DisableExplicitGC -XX:+CMSIncrementalMode -XX:+CMSIncrementalPacing -XX:+AggressiveOpts -Xms$MINRAM -Xmx$MAXRAM -XX:PermSize=128m -jar $SERVICE nogui"
 
 #---------------------+
