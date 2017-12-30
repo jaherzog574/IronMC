@@ -1,5 +1,7 @@
 #!/bin/bash
 
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
+
 # Source function library
 ## CentOS/Fedora
 if [ -f /etc/rc.d/init.d/functions ]
@@ -15,16 +17,16 @@ fi
 #---------------------+
 #    Configuration    |
 #---------------------+
-SCRNNAME="minecraft"
-SERVICE="$SCRNNAME.jar"
-MCPATH="/home/mc/$SCRNNAME"
+SCRNNAME="mainMC"
+SERVICE="server.jar"
+MCPATH="/home/minecraft/$SCRNNAME"
 BACKUP_PATH="$MCPATH/backups"
 WORLDNAME="$(cat $MCPATH/server.properties | grep -E 'level-name' | sed -e s/.*level-name=//)"
 SERVERPORT="$(cat $MCPATH/server.properties | grep -E 'server-port' | sed -e s/.*server-port=//)"
-USER="root"
-CPU_COUNT="4"
-MINRAM="2G"
-MAXRAM="8G"
+USER="minecraft"
+CPU_COUNT="2"
+MINRAM="1G"
+MAXRAM="4G"
 INVOCATION="java -server -XX:UseSSE=4 -XX:+UseCMSCompactAtFullCollection -XX:ParallelGCThreads=$CPU_COUNT -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+DisableExplicitGC -XX:+CMSIncrementalMode -XX:+CMSIncrementalPacing -XX:+AggressiveOpts -Xms$MINRAM -Xmx$MAXRAM -XX:PermSize=128m -jar $SERVICE nogui"
 
 #---------------------+
@@ -36,6 +38,9 @@ STOP_WARNING_MAX="Server Restarting in 5 minutes..."
 STOP_WARNING_MID="Server Restarting in 1 minute..."
 STOP_WARNING_FINAL="Server shutting down in 10 seconds..."
 
+#---------------------+
+#      Utilities      |
+#---------------------+
 
 as_user() {
   ME="$(whoami)"
@@ -280,10 +285,6 @@ case $1 in
 	  mc_info
 	;;
 	serverCheck)
-	   if is_running; then
-	   	# Do nothing if server is running
-	   	true
-	   fi
 	   if ! is_running; then
 	   	mc_start
 	   fi
