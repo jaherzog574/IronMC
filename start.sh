@@ -1,4 +1,11 @@
 #!/bin/bash
+# Original code from ForsakenDev's MinecraftStartupScript project
+# https://github.com/ForsakenDev/MinecraftStartupScript
+#
+# Edits and rename to "IronMC" by speeddemon574
+# https://github.com/speeddemon574/IronMC
+#
+
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
 
